@@ -1,0 +1,25 @@
+datasource db3 {
+  provider = "sqlite"
+  url      = "file:../dev.db"
+}
+
+generator client3 {
+  provider = "prisma-client-js"
+}  
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  posts     Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  User User[]
+}
+
+
+
