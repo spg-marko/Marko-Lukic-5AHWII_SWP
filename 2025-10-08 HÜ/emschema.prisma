@@ -1,0 +1,43 @@
+datasource db3 {
+  provider = "sqlite"
+  url      = "file:../dev.db"
+}
+
+generator client3 {
+  provider = "prisma-client-js"
+}  
+
+model Player {
+  id        Int      @id @default(autoincrement())
+  vorname   String
+  nachname  String?
+  mannschaft mannschaft[]
+}
+
+model mannschaft    {
+  id        Int      @id @default(autoincrement())
+  name      String
+  players   Player[]
+  matchesAsA match[] @relation("MannschaftA")
+  matchesAsB match[] @relation("MannschaftB")
+}
+
+model match {
+  id        Int      @id @default(autoincrement())
+  mannschaftAId Int
+  mannschaftBId Int
+  mannschaftA   mannschaft[] @relation("MannschaftA")
+  mannschaftB   mannschaft[] @relation("MannschaftB")
+  stadionId  String?
+  stadion    stadion? @relation(fields: [stadionId], references: [id])
+  scoreA   Int?
+  scoreB   Int?
+  date     DateTime
+}
+
+model stadion {
+  id      String   @id
+  name    String
+  city    String
+  matches match[]
+}
